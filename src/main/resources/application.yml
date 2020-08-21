@@ -14,6 +14,11 @@ spring:
     url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC #指定数据库地址
     username: root
     password: 123456
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/
+      additional-exclude: WEB-INF/**
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #指定mapper文件的目录
   type-aliases-package: boot.domain #指定实体类包

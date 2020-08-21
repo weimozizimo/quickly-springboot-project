@@ -113,6 +113,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
+        </dependency>
+
     </dependencies>
 
     <build>

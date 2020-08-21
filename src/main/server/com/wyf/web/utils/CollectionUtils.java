@@ -1,6 +1,4 @@
-package utils;
-
-import lombok.extern.slf4j.Slf4j;
+package com.wyf.web.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

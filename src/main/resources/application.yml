@@ -1,7 +1,7 @@
 server:
-  port: 9090
+  port: 9091
   servlet:
-    context-path: /zimo
+    context-path: /
 spring:
   thymeleaf:
     cache: false
@@ -10,12 +10,17 @@ spring:
     mode: HTML5
     encoding: UTF-8
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver  #Ö¸¶¨ÒýÇæÒÀÀµ
-    url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC #Ö¸¶¨Êý¾Ý¿âµØÖ·
+    driver-class-name: com.mysql.jdbc.Driver  #Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC #Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½Ö·
     username: root
     password: 123456
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/
+      additional-exclude: WEB-INF/**
 mybatis:
-  mapper-locations: classpath:mapper/*.xml  #Ö¸¶¨mapperÎÄ¼þµÄÄ¿Â¼
-  type-aliases-package: boot.domain #Ö¸¶¨ÊµÌåÀà°ü
+  mapper-locations: classpath:mapper/*.xml  #Ö¸ï¿½ï¿½mapperï¿½Ä¼ï¿½ï¿½ï¿½Ä¿Â¼
+  type-aliases-package: boot.domain #Ö¸ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½
   configuration:
-    map-underscore-to-camel-case: true #ÆôÓÃÍÕ·åÃüÃû·¨
+    map-underscore-to-camel-case: true #ï¿½ï¿½ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½

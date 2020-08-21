@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.wyf</groupId>
-    <artifactId>spring-boot-starter</artifactId>
+    <artifactId>spring-security-study</artifactId>
     <version>version-0.1</version>
     <name>spring-boot-starter</name>
-    <description>SpringBoot的脚手架</description>
+    <description>spring security学习</description>
 
     <!--  通用配置  -->
     <properties>
@@ -85,6 +85,25 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+
+<!--        &lt;!&ndash; spring security &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+        <!-- jwt -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
         </dependency>
 
        <!-- 测试-->

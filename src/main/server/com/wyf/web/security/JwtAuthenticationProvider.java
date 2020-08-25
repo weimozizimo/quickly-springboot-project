@@ -19,15 +19,14 @@ public class JwtAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        //此处腹泻密码验证逻辑
+        //此处复写密码验证逻辑
 
         super.additionalAuthenticationChecks(userDetails, authentication);
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        //此处腹泻整个登录认证逻辑
-
+        //此处复写整个登录认证逻辑
         return super.authenticate(authentication);
     }
 }

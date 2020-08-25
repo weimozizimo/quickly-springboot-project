@@ -1,5 +1,7 @@
 package com.wyf.web.config;
 
+import com.wyf.web.filter.JwtAuthticationFilter;
+import com.wyf.web.filter.JwtLoginFilter;
 import com.wyf.web.security.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 
@@ -61,8 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //退出登录处理器
         http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
         //开启登录认证流程过滤器
-        http.addFilterBefore();
+        http.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
         //访问控制时登录状态检查过滤器
+        http.addFilterBefore(new JwtAuthticationFilter(authenticationManager()),UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

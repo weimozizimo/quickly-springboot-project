@@ -74,7 +74,6 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        //存储登录信息到上下文
         // 存储登录认证信息到上下文
         SecurityContextHolder.getContext().setAuthentication(authResult);
         // 记住我服务

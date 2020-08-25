@@ -10,17 +10,17 @@ spring:
     mode: HTML5
     encoding: UTF-8
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver  #Ö¸¶¨ÒıÇæÒÀÀµ
-    url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC #Ö¸¶¨Êı¾İ¿âµØÖ·
+    driver-class-name: com.mysql.jdbc.Driver  #æŒ‡å®šå¼•æ“ä¾èµ–
+    url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC #æŒ‡å®šæ•°æ®åº“åœ°å€
     username: root
     password: 123456
-  devtools:
+  devtools: #å¯ç”¨é¡¹ç›®çƒ­éƒ¨ç½²
     restart:
       enabled: true
       additional-paths: src/main/
       additional-exclude: WEB-INF/**
 mybatis:
-  mapper-locations: classpath:mapper/*.xml  #Ö¸¶¨mapperÎÄ¼şµÄÄ¿Â¼
-  type-aliases-package: boot.domain #Ö¸¶¨ÊµÌåÀà°ü
+  mapper-locations: classpath:mapper/*.xml  #æŒ‡å®šmapperæ–‡ä»¶çš„ç›®å½•
+  type-aliases-package: boot.domain #æŒ‡å®šå®ä½“ç±»åŒ…
   configuration:
-    map-underscore-to-camel-case: true #ÆôÓÃÍÕ·åÃüÃû·¨
+    map-underscore-to-camel-case: true #å¯ç”¨é©¼å³°å‘½åæ³•

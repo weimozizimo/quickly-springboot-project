@@ -1,15 +1,15 @@
 package com.wyf.web.config;
 
 import com.wyf.web.filter.JwtAuthticationFilter;
-import com.wyf.web.filter.JwtLoginFilter;
 import com.wyf.web.security.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -56,6 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //跨域预检请求
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 //登录url
+                .antMatchers("/login").permitAll()
+                //swagger
                 .antMatchers("/swagger**/**").permitAll()
                 .antMatchers("/webjars/**").permitAll() //这个是允许加载bootstrap前端文件
                 .antMatchers("/v2/**").permitAll()
@@ -64,14 +66,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //退出登录处理器
         http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
         //开启登录认证流程过滤器
-        http.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+        //使用自定义登录认证过滤器所以，注释掉这段代码
+//        http.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
         //访问控制时登录状态检查过滤器
         http.addFilterBefore(new JwtAuthticationFilter(authenticationManager()),UsernamePasswordAuthenticationFilter.class);
     }
 
+    @Bean
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 }
 

@@ -23,7 +23,7 @@ public class SwaggerConfig {
         ParameterBuilder parameterBuilder = new ParameterBuilder();
         List<Parameter> parameters = new ArrayList<>();
         parameterBuilder.name("Authorization").description("令牌").modelRef(new ModelRef("string")).parameterType("header")
-                .required(true).build();
+                .required(false).build();
         parameters.add(parameterBuilder.build());
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any()).build().globalOperationParameters(parameters);

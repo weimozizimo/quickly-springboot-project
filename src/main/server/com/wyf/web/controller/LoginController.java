@@ -7,7 +7,6 @@ import com.wyf.web.vo.HttpResult;
 import com.wyf.web.vo.LoginBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 //登录控制器
 @RestController
 public class LoginController {
+
     @Autowired
     private AuthenticationManager authenticationManager;
 

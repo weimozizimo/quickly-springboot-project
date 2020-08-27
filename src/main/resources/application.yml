@@ -10,7 +10,7 @@ spring:
     mode: HTML5
     encoding: UTF-8
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver  #ָ����������
+    driver-class-name: com.mysql.cj.jdbc.Driver  #ָ����������
     url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC #ָ�����ݿ��ַ
     username: root
     password: 123456

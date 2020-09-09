@@ -1,6 +1,7 @@
 package com.wyf.web.config;
 
-import com.wyf.web.filter.JwtLoginFilter;
+import com.wyf.web.filter.JwtAuthticationFilter;
+import com.wyf.web.security.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +13,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
@@ -54,10 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //使用自定义登录身份认证组件
-//        auth.authenticationProvider(new JwtAuthenticationProvider(userDetailsService));
+        auth.authenticationProvider(new JwtAuthenticationProvider(userDetailsService));
         //使用默认的登录身份认证组件
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(new BCryptPasswordEncoder());
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -79,16 +78,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
         //开启登录认证流程过滤器
         //使用自定义登录认证过滤器所以，注释掉这段代码
-        http.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-
-        http.rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(3600)
-                .userDetailsService(userDetailsService)
-                .rememberMeServices(new PersistentTokenBasedRememberMeServices("rm",userDetailsService,persistentTokenRepository()));
+//        http.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
         //访问控制时登录状态检查过滤器
         //如果强制要求需要请求头携带token发送请求时解除该行注释
-//        http.addFilterBefore(new JwtAuthticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

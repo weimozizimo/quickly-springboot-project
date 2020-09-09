@@ -1,6 +1,5 @@
 package com.wyf.web.config;
 
-import com.wyf.web.filter.JwtAuthticationFilter;
 import com.wyf.web.security.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -76,12 +74,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         //退出登录处理器
         http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
-        //开启登录认证流程过滤器
-        //使用自定义登录认证过滤器所以，注释掉这段代码
-//        http.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-        //访问控制时登录状态检查过滤器
-        //如果强制要求需要请求头携带token发送请求时解除该行注释
-        http.addFilterBefore(new JwtAuthticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

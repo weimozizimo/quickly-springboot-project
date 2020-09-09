@@ -3,14 +3,9 @@ package com.wyf.web.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wyf.web.security.JwtAuthenticatioToken;
-import com.wyf.web.security.JwtAuthenticationProvider;
-import com.wyf.web.utils.HttpUtils;
-import com.wyf.web.utils.JwtTokenUtils;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -63,7 +58,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         setDetails(request,authReqeust);
 
-        return super.attemptAuthentication(request, response);
+
+        return this.getAuthenticationManager().authenticate(authReqeust);
     }
 
     @Override
@@ -74,17 +70,20 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        //存储登录信息到上下文
-        SecurityContextHolder.getContext().setAuthentication(authResult);
-        // 记住我服务
-        getRememberMeServices().loginSuccess(request, response, authResult);
-        // 触发事件监听器
-        if (this.eventPublisher != null) {
-            eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
-        }
-        //生成并返回token给客户端，后续访问携带此token
-        JwtAuthenticatioToken token = new JwtAuthenticatioToken(null, null, JwtTokenUtils.generateToken(authResult));
-        HttpUtils.write(response,token);
+        super.successfulAuthentication(request,response,chain,authResult);
+//        //存储登录信息到上下文
+//        SecurityContextHolder.getContext().setAuthentication(authResult);
+//        RememberMeServices rememberMeServices = getRememberMeServices();
+//        //设置记住我服务的模式
+//        rememberMeServices.loginSuccess(request, response, authResult);
+//
+//        // 触发事件监听器
+//        if (this.eventPublisher != null) {
+//            eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
+//        }
+//        //生成并返回token给客户端，后续访问携带此token
+//        JwtAuthenticatioToken token = new JwtAuthenticatioToken(null, null, JwtTokenUtils.generateToken(authResult));
+//        HttpUtils.write(response,token);
     }
 
 

@@ -11,7 +11,7 @@
     <groupId>com.wyf</groupId>
     <artifactId>spring-security-study</artifactId>
     <version>version-0.1</version>
-    <name>spring-boot-starter</name>
+    <name>spring-security-study</name>
     <description>spring security学习</description>
 
     <!--  通用配置  -->
@@ -27,6 +27,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--springboot jdbc-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
 

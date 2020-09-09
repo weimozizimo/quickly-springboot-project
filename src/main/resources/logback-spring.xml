@@ -119,7 +119,7 @@
         <appender-ref ref="console"/>
     </root>
     <!-- name包必须能够扫描到所以类，包括启动类 -->
-    <logger name="com.ddxx.*" level="debug" additivity="true">
+    <logger name="com.wyf.*" level="debug" additivity="true">
         <!-- 控制台输出 -->
         <appender-ref ref="console"/>
         <appender-ref ref="debug"/>
@@ -127,4 +127,13 @@
         <appender-ref ref="error"/>
         <appender-ref ref="file"/>
     </logger>
+    <logger name="com.ibatis" level="DEBUG" />
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" />
+    <logger name="java.sql.Connection" level="DEBUG" />
+    <logger name="java.sql.Statement" level="DEBUG" />
+    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <logger name="java.sql.ResultSet" level="DEBUG" />
+    <logger name="com.wyf.web.dao.*" level="DEBUG"/>
 </configuration>

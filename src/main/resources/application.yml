@@ -10,8 +10,8 @@ spring:
     mode: HTML5
     encoding: UTF-8
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver  #ָ����������
-    url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC #ָ�����ݿ��ַ
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: 123456
   devtools:
@@ -19,8 +19,10 @@ spring:
       enabled: true
       additional-paths: src/main/
       additional-exclude: WEB-INF/**
+
 mybatis:
-  mapper-locations: classpath:mapper/*.xml  #ָ��mapper�ļ���Ŀ¼
-  type-aliases-package: boot.domain #ָ��ʵ�����
+  mapper-locations: classpath:com/wyf/web/mapper/*.xml
+  type-aliases-package: com.wyf.web.model
   configuration:
-    map-underscore-to-camel-case: true #�����շ�������
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

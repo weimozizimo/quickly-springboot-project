@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyf.web.dao.UserDao">
+
+    <sql id="USER">${@com.wyf.web.consts.Tablename@USER}</sql>
+    <sql id="AUTHORITY">${@com.wyf.web.consts.Tablename@AUTHORITY}</sql>
+    <sql id="USER_ROLE">${@com.wyf.web.consts.Tablename@USER_ROLE}</sql>
+    <sql id="ROLE">${@com.wyf.web.consts.Tablename@ROLE}</sql>
+    <sql id="ROLE_AUTH">${@com.wyf.web.consts.Tablename@ROLE_AUTH}</sql>
+
+    <resultMap id="roleMap" type="com.wyf.web.model.RoleDO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="desc" property="desc" />
+        <collection property="authorities" select="getAuthByRole" column="id" javaType="ArrayList"   ofType="com.wyf.web.model.AuthorityDO">
+            <id column="id" property="id" />
+            <result column="name" property="name" />
+            <result column="desc" property="desc"  />
+        </collection>
+    </resultMap>
+
+    <select id="getAuthByRole" resultType="com.wyf.web.model.AuthorityDO">
+        SELECT a.id "id",a.name "name",a.desc "desc"
+        FROM <include refid="ROLE"/> r
+        LEFT JOIN
+        <include refid="ROLE_AUTH" /> ra
+        ON ra.role_id = r.id
+        LEFT JOIN
+        <include refid="AUTHORITY"/> a
+        ON a.id = ra.auth_id
+        <where>
+            AND r.id = #{id}
+        </where>
+    </select>
+
+    <select id="getRoleByUserId" resultMap = "roleMap">
+        SELECT r.id "id",r.name "name",r.desc "desc"
+        FROM <include refid="USER"/> u
+        LEFT JOIN
+        <include refid="USER_ROLE" /> ur
+        ON u.id = ur.user_id
+        LEFT JOIN
+        <include refid="ROLE"/> r
+         ON ur.role_id = r.id
+         <where>
+             AND u.username = #{username}
+         </where>
+    </select>
+
+    <select id="getUserByUsername" resultType="com.wyf.web.model.User">
+        SELECT *
+        FROM <include refid="USER" />
+        WHERE username = #{username}
+    </select>
+
+    
+</mapper>

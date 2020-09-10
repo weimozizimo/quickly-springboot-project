@@ -1,22 +1,11 @@
 package com.wyf.web.config;
 
-import com.wyf.web.security.JwtAuthenticationProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
-import javax.sql.DataSource;
 
 
 
@@ -40,57 +29,33 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-
-
-    @Autowired
-    private DataSource dataSource;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //使用自定义登录身份认证组件
-        auth.authenticationProvider(new JwtAuthenticationProvider(userDetailsService));
-        //使用默认的登录身份认证组件
-//        auth.userDetailsService(userDetailsService)
-//                .passwordEncoder(new BCryptPasswordEncoder());
-    }
+//    @Autowired
+//    private DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //禁用csrf，由于使用的jwt所有这里不需要csrf
-        http.cors().and().csrf().disable()
-                .authorizeRequests()
-                //跨域预检请求
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                //登录url
-                .antMatchers("/login").permitAll()
-                //swagger
-                .antMatchers("/swagger**/**").permitAll()
-                .antMatchers("/webjars/**").permitAll() //这个是允许加载bootstrap前端文件
-                .antMatchers("/v2/**").permitAll()
-                //其他所有请求需要身份认证
-                .anyRequest().authenticated();
-        //退出登录处理器
-        http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
+        http
+                .authorizeRequests() //配置需要拦截的请求路径
+                .antMatchers("/product/**").hasRole("USER") //只有拥有USER角色才能访问该路径
+                .antMatchers("/admin/**").hasRole("ADMIN") //同上
+                .anyRequest().authenticated() //所有请求都需要进行权限验证
+                .and()
+                .formLogin(); //使用表单验证
+
     }
 
-    @Bean
     @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
-
-
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
-        // 将 DataSource 设置到 PersistentTokenRepository
-        persistentTokenRepository.setDataSource(dataSource);
-        // 第一次启动的时候自动建表（可以不用这句话，自己手动建表，源码中有语句的）
-        // persistentTokenRepository.setCreateTableOnStartup(true);
-        return persistentTokenRepository;
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //内存的登录验证方式
+        auth.inMemoryAuthentication()
+               .withUser("admin")
+                .password("{noop}123")
+                .roles("ADMIN","USER")
+                .and()
+                .withUser("admin2")
+                .password("{noop}123")
+                .roles("USER");
     }
 }
 

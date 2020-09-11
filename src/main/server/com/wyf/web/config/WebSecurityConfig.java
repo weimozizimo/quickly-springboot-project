@@ -1,11 +1,14 @@
 package com.wyf.web.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 
@@ -32,6 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Autowired
 //    private DataSource dataSource;
 
+    @Autowired
+    UserDetailsService userDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //禁用csrf，由于使用的jwt所有这里不需要csrf
@@ -47,15 +53,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //内存的登录验证方式
-        auth.inMemoryAuthentication()
-               .withUser("admin")
-                .password("{noop}123")
-                .roles("ADMIN","USER")
-                .and()
-                .withUser("admin2")
-                .password("{noop}123")
-                .roles("USER");
+//        //内存的登录验证方式
+//        auth.inMemoryAuthentication()
+//               .withUser("admin")
+//                .password("{noop}123")
+//                .roles("ADMIN","USER")
+//                .and()
+//                .withUser("admin2")
+//                .password("{noop}123")
+//                .roles("USER");
+        //数据的登录验证方式
+        auth.userDetailsService(userDetailsService)
+        .passwordEncoder(new BCryptPasswordEncoder());
     }
 }
 

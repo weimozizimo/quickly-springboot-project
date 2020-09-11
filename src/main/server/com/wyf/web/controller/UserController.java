@@ -37,6 +37,7 @@ public class UserController {
         return "current Login User is " + currentUser;
     }
 
+
     @GetMapping(value="admin/edit")
     public HttpResult edit() {
         return HttpResult.ok("the edit service is called success.");

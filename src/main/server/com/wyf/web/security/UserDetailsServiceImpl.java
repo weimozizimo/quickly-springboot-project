@@ -28,6 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(user==null){
             throw new UsernameNotFoundException("该用户不存在");
         }
+
         //用户权限列表，根据用户拥有的权限标识与如@PerAuthorize("hasAuthority('sys:menu:view')")标注的接口对比，决定是否可以调用接口
         Set<String> permissions = userService.findPermissions(username);
         List<GrantedAuthorityImpl> grantedAuthorities = permissions.stream().map(GrantedAuthorityImpl::new).collect(Collectors.toList());

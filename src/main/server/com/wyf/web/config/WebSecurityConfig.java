@@ -43,13 +43,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //禁用csrf，由于使用的jwt所有这里不需要csrf
         http
                 .authorizeRequests() //配置需要拦截的请求路径
-                .antMatchers("/product/**").hasRole("USER") //只有拥有USER角色才能访问该路径
-                .antMatchers("/admin/**").hasRole("ADMIN") //同上
                 .anyRequest().authenticated() //所有请求都需要进行权限验证
                 .and()
-                .formLogin(); //使用表单验证
+                .formLogin() //使用表单验证
+                .and()
+                .rememberMe()
+                .userDetailsService(userDetailsService)
+                .tokenValiditySeconds(3600)
+                .tokenRepository();
 
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -66,5 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService)
         .passwordEncoder(new BCryptPasswordEncoder());
     }
+
+
 }
 

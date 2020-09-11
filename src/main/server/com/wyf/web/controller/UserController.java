@@ -1,6 +1,7 @@
 package com.wyf.web.controller;
 
 import com.wyf.web.vo.HttpResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,10 @@ public class UserController {
     }
 
     //获取当前登录用户信息
+    //验证权限
+//    @PreAuthorize("hasAuthority('sys:user:view')")
+    //验证角色
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     @GetMapping(value = "product/info")
     public String productInfo(){
         String currentUser =  "";
@@ -36,7 +41,6 @@ public class UserController {
         }
         return "current Login User is " + currentUser;
     }
-
 
     @GetMapping(value="admin/edit")
     public HttpResult edit() {

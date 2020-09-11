@@ -2,7 +2,6 @@ package com.wyf.springbootstarter;
 
 import com.wyf.SpringBootStarterApplication;
 import com.wyf.web.dao.UserDao;
-import com.wyf.web.model.RoleDO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +30,8 @@ class SpringBootStarterApplicationTests {
 
     @Test
     void test2(){
-        RoleDO role = dao.getRoleByUserId("zimo");
-        System.out.println(role);
+//        RoleDO role = dao.getRoleByUserId("zimo");
+//        System.out.println(role);
 
     }
 

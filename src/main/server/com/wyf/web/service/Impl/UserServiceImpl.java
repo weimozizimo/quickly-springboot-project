@@ -40,18 +40,31 @@ public class UserServiceImpl implements UserService {
 
         HashSet<String> permmisions = new HashSet<>();
 
-        RoleDO role = userDao.getRoleByUserId(username);
-        if(role==null){
+        //添加权限
+        List<RoleDO> roles = userDao.getRoleByUserId(username);
+        if(roles==null){
             return permmisions;
         }else {
-            if(role.getAuthorities()==null){
-                return permmisions;
-            }else{
-                List<AuthorityDO> authorities = role.getAuthorities();
-                authorities.forEach((auth)->{permmisions.add(auth.getName());});
+            for (RoleDO role:roles
+                 ) {
+                if(role.getAuthorities()==null){
+                    continue;
+                }else{
+                    //添加权限
+                    List<AuthorityDO> authorities = role.getAuthorities();
+                    authorities.forEach((auth)->{
+                        if(!permmisions.contains(auth.getName())){
+                            permmisions.add(auth.getName());
+                        }});
+                }
+                if(role.getName()!=null){
+                    //添加身份
+                    permmisions.add(role.getName());
+                }
             }
         }
 
         return permmisions;
     }
+
 }

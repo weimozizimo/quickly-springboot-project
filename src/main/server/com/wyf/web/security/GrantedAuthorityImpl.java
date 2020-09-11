@@ -12,6 +12,21 @@ public class GrantedAuthorityImpl implements GrantedAuthority {
 
 	private String authority;
 
+	private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public GrantedAuthorityImpl(String authority, String role) {
+        this.authority = authority;
+        this.role = role;
+    }
+
     public GrantedAuthorityImpl(String authority) {
         this.authority = authority;
     }

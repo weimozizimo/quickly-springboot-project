@@ -1,6 +1,8 @@
 package com.wyf.web.config;
 
+import com.wyf.web.filter.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -9,6 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 
 
@@ -32,16 +39,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     UserDetailsService userDetailsService;
+
+
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //禁用csrf，由于使用的jwt所有这里不需要csrf
         http
+                .addFilterBefore(, UsernamePasswordAuthenticationFilter)
                 .authorizeRequests() //配置需要拦截的请求路径
                 .anyRequest().authenticated() //所有请求都需要进行权限验证
                 .and()
@@ -50,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .userDetailsService(userDetailsService)
                 .tokenValiditySeconds(3600)
-                .tokenRepository();
+                .tokenRepository(persistentTokenRepository());
 
     }
 
@@ -71,6 +83,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .passwordEncoder(new BCryptPasswordEncoder());
     }
 
-
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
+        // 将 DataSource 设置到 PersistentTokenRepository
+        persistentTokenRepository.setDataSource(dataSource);
+        // 第一次启动的时候自动建表（可以不用这句话，自己手动建表，源码中有语句的）
+        // persistentTokenRepository.setCreateTableOnStartup(true);
+        return persistentTokenRepository;
+    }
 }
 

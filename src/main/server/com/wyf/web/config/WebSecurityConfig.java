@@ -4,6 +4,7 @@ import com.wyf.web.filter.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,7 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userDetailsService;
 
-
+    @Bean
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 
 
 
@@ -53,11 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //禁用csrf，由于使用的jwt所有这里不需要csrf
         http
-                .addFilterBefore(, UsernamePasswordAuthenticationFilter)
+                .addFilterBefore(new ValidateCodeFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+                .formLogin() //使用表单验证
+                .loginPage("/login.html")
+                .loginProcessingUrl("/autentication/forms")
+                .and()
                 .authorizeRequests() //配置需要拦截的请求路径
                 .anyRequest().authenticated() //所有请求都需要进行权限验证
-                .and()
-                .formLogin() //使用表单验证
                 .and()
                 .rememberMe()
                 .userDetailsService(userDetailsService)

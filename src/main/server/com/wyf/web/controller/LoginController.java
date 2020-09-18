@@ -1,15 +1,16 @@
 package com.wyf.web.controller;
 
 
-import com.wyf.web.vo.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 //登录控制器
 @RestController
@@ -19,10 +20,15 @@ public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    //登录接口
-    @PostMapping("/form")
-    public HttpResult loogin(@RequestParam("username")String username,@RequestParam("password")String password, HttpServletRequest request){
+    @PostMapping("form")
+    public String form(HttpServletRequest request,HttpServletResponse response){
 
-        return HttpResult.ok("登录成功");
+        return "";
+    }
+
+    @GetMapping("login")
+    public ModelAndView login(ModelAndView model){
+         model.setViewName("index");
+        return model;
     }
 }

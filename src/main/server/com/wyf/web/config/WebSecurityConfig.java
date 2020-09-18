@@ -60,16 +60,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .addFilterBefore(new ValidateCodeFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .formLogin() //使用表单验证
-                .loginPage("/login.html")
-                .loginProcessingUrl("/autentication/forms")
+                .loginPage("/authentication/login")
+                .loginProcessingUrl("/authentication/form")
+                .successForwardUrl("/product/info")
                 .and()
                 .authorizeRequests() //配置需要拦截的请求路径
+                .antMatchers("/authentication/login","/authentication/form").permitAll()
                 .anyRequest().authenticated() //所有请求都需要进行权限验证
                 .and()
                 .rememberMe()
                 .userDetailsService(userDetailsService)
                 .tokenValiditySeconds(3600)
-                .tokenRepository(persistentTokenRepository());
+                .tokenRepository(persistentTokenRepository())
+                .and()
+                .csrf().disable();
 
     }
 
@@ -96,7 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 将 DataSource 设置到 PersistentTokenRepository
         persistentTokenRepository.setDataSource(dataSource);
         // 第一次启动的时候自动建表（可以不用这句话，自己手动建表，源码中有语句的）
-        // persistentTokenRepository.setCreateTableOnStartup(true);
+//         persistentTokenRepository.setCreateTableOnStartup(true);
         return persistentTokenRepository;
     }
 }

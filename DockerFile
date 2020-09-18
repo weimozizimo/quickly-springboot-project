@@ -1,0 +1,8 @@
+FROM openjdk:oraclelinux8
+
+ADD target/*.jar spring-security-study.jar
+
+EXPOSE 9091
+
+ENTRYPOINT ["java","-jar","spring-security-study.jar"]
+

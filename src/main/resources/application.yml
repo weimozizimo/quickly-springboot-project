@@ -1,5 +1,5 @@
 server:
-  port: 9091
+  port: 8888
   servlet:
     context-path: /
 spring:
@@ -11,7 +11,7 @@ spring:
     encoding: UTF-8
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    url: jdbc:mysql://192.168.100.115:3306/oauth?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: 123456
   devtools:
